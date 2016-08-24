@@ -102,8 +102,8 @@
     
         $(document).ready(function() { 
         
-             webSocketURL = "http://" + window.location.hostname + "/robot_control";
-             cameraURL = "http://" + window.location.hostname + ":8080/?action=stream";
+             webSocketURL = "http://" + window.location.hostname + ":8081/robot_control";
+             cameraURL = "http://" + window.location.hostname + ":8081/?action=stream";
              socket = new SockJS( webSocketURL );
              var shutdownComplete = false;
          
@@ -198,7 +198,8 @@
   </head>
 
   <body>
-    <p><img id="camera" src=""/></p>
+
+    <!--  <p><img id="camera" src=""/></p> -->
     
     <div class="joystick" id="motor_stick">
       <div class="inner_circle"></div>

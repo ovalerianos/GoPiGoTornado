@@ -60,7 +60,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
 import logging
 
 LOG_FILENAME = "/tmp/robot_web_server_log.txt"
-file_location = "/Users/ovalerianos/PycharmProjects/GopiGoSocket/www/"
+file_location = "/home/ovalerianos/PycharmProjects/GoPiGoTornado/www"
 logging.basicConfig( filename=LOG_FILENAME, level=logging.DEBUG )
 
 # Also log to stdout
@@ -87,11 +87,12 @@ import subprocess
 import sys
 robot = None
 
-cameraStreamer = None
+#cameraStreamer = None
 scriptPath = os.path.dirname( __file__ )
 webPath = os.path.abspath( file_location)
 print webPath
 robotConnectionResultQueue = Queue.Queue()
+print "Robot ",robotConnectionResultQueue
 isClosing = False
 
 #--------------------------------------------------------------------------------------------------- 
@@ -127,11 +128,11 @@ class ConnectionHandler( sockjs.tornado.SockJSConnection ):
                     if robot != None:
                         robot.centreNeck()
                 
-                elif lineData[ 0 ] == "StartStreaming":
-                    cameraStreamer.startStreaming()
+                #elif lineData[ 0 ] == "StartStreaming":
+                    #cameraStreamer.startStreaming()
                     
                 elif lineData[ 0 ] == "Shutdown":
-                    cameraStreamer.stopStreaming()
+                    #cameraStreamer.stopStreaming()
                     #gopigo.stop()
                     robot.disconnect()
                     sys.exit()
@@ -227,7 +228,7 @@ if __name__ == "__main__":
     #( r"/(.*)", tornado.web.StaticFileHandler, {"path": scriptPath + "/www" } ) ] \
     
     # Create a camera streamer
-    cameraStreamer = camera_streamer.CameraStreamer()
+    #cameraStreamer = camera_streamer.CameraStreamer()
     
     # Start connecting to the robot asyncronously
     robotConnectionThread = threading.Thread( target=createRobot, 
@@ -244,9 +245,9 @@ if __name__ == "__main__":
         robotUpdate, 100, io_loop=tornado.ioloop.IOLoop.instance() )
     robotPeriodicCallback.start()
     
-    cameraStreamerPeriodicCallback = tornado.ioloop.PeriodicCallback( 
-        cameraStreamer.update, 1000, io_loop=tornado.ioloop.IOLoop.instance() )
-    cameraStreamerPeriodicCallback.start()
+    #cameraStreamerPeriodicCallback = tornado.ioloop.PeriodicCallback(
+    #   cameraStreamer.update, 1000, io_loop=tornado.ioloop.IOLoop.instance() )
+    #cameraStreamerPeriodicCallback.start()
     
     tornado.ioloop.IOLoop.instance().start()
     
@@ -260,4 +261,4 @@ if __name__ == "__main__":
             robot = robotConnectionResultQueue.get()
             robot.disconnect()
             
-    cameraStreamer.stopStreaming()
+    #cameraStreamer.stopStreaming()
